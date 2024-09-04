@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Teacher's Day</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, #1a1a1a, #000000);
+            font-family: Arial, sans-serif;
+        }
+
+        #container {
+            position: relative;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        #canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        #sun {
+            position: absolute;
+            bottom: -300px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 270px;
+            height: 270px;
+            background: radial-gradient(circle, #ffeb3b, #ff9800);
+            border-radius: 50%;
+            animation: rise 10s ease-in-out forwards;
+            box-shadow: 0 0 300px 100px rgba(255, 152, 0, 0.6),
+                0 0 600px 200px rgba(255, 152, 0, 0.4),
+                0 0 900px 300px rgba(255, 152, 0, 0.2);
+            z-index: 2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        @keyframes rise {
+            0% {
+                bottom: -300px;
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 1;
+            }
+
+            100% {
+                bottom: 50%;
+                opacity: 1;
+            }
+        }
+
+        h1, .letter, .sun-text {
+            opacity: 0;
+            transition: opacity 5s ease-in-out;
+            animation: fadeIn 10s forwards;
+            filter: brightness(0.5);
+            z-index: 3;
+            position: relative;
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                filter: brightness(0.5);
+            }
+
+            100% {
+                opacity: 1;
+                filter: brightness(1);
+            }
+        }
+
+        h1 {
+            margin-top: 120px;
+            font-size: 2em;
+            color: #FF4500;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+            text-align: center;
+            width: 100%;
+            white-space: pre-wrap;
+            animation-delay: 10s;
+        }
+
+        .letter {
+            margin-top: 200px;
+            color: #ffffff;
+            padding: 20px;
+            font-size: 1.2em;
+            width: 90%;
+            max-width: 800px;
+            border-radius: 10px;
+            text-align: center;
+            line-height: 1.6;
+            animation-delay: 10s;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .sun-text {
+            position: absolute;
+            top: 20%;
+            color: #FFCC00;
+            font-size: 2em;
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+            transform: translateY(-50%);
+            text-align: center;
+            animation-delay: 10s;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <canvas id="canvas"></canvas>
+        <div id="sun">
+            <div class="sun-text">RAMANA SANKAR SIR</div>
+        </div>
+        <h1>A Small Tribute to The Sun who is lighting up many students like me with their rays and fueling us with their energy. I'm ready to be in your gravitational force and revolve around you to acquire knowledge continuously.</h1>
+        <div class="letter">
+            Respected Sir ,<br><br>
+            Happy Teacher's Day, Sir. I wanted to take a moment to express my heartfelt gratitude for all the knowledge and inspiration you have provided me. Your dedication to teaching and your passion for learning have made a profound impact on my life. The lessons you've taught me extend far beyond the classroom, and I am deeply thankful for your guidance and support.<br><br>
+            On this special day, I want to acknowledge the significant role you have played in shaping my understanding and encouraging my growth. Your enthusiasm and commitment have inspired me to strive for excellence and pursue my goals with determination.<br><br>
+            Thank you for being an extraordinary teacher and a remarkable mentor. I am truly grateful for everything you have done for me.<br><br>
+            I wish god to give  you good health and happiness.<br><br> 
+            With sincere appreciation,<br>
+            Yours obediently,<br>
+            P T Naidu
+        </div>
+    </div>
+
+    <!-- Include Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/examples/jsm/loaders/FontLoader.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/examples/jsm/geometries/TextGeometry.js"></script>
+
+    <script>
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('canvas'), antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        const light = new THREE.PointLight(0xffffff, 1, 100);
+        light.position.set(50, 50, 50);
+        scene.add(light);
+
+        const ambientLight = new THREE.AmbientLight(0x404040);
+        scene.add(ambientLight);
+
+        const particleCount = 3000;
+        const particles = new THREE.BufferGeometry();
+        const positions = [];
+
+        for (let i = 0; i < particleCount; i++) {
+            positions.push((Math.random() * 200 - 100) * 2);
+            positions.push((Math.random() * 200 - 100) * 2);
+            positions.push((Math.random() * 200 - 100) * 2);
+        }
+
+        particles.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+
+        const particleMaterial = new THREE.PointsMaterial({ color: 0xffffff, size: 0.5 });
+        const particleSystem = new THREE.Points(particles, particleMaterial);
+        scene.add(particleSystem);
+
+        const loader = new THREE.FontLoader();
+        loader.load('https://threejs.org/examples/fonts/helvetiker_regular.typeface.json', function (font) {
+            const texts = [
+                { text: 'PADALA THAVITI NAIDU', radius: 20, speed: 0.01 },
+                { text: '__', radius: 190, speed: 0.0001 }
+            ];
+
+            const textMeshes = texts.map(({ text, radius, speed }, index) => {
+                const textGeometry = new THREE.TextGeometry(text, {
+                    font: font,
+                    size: 1,
+                    height: 0.2,
+                    curveSegments: 12,
+                    bevelEnabled: false
+                });
+
+                const textMaterial = new THREE.MeshBasicMaterial({ color: 0xff8800 });
+                const textMesh = new THREE.Mesh(textGeometry, textMaterial);
+
+                const angle = (index / texts.length) * Math.PI * 2;
+                textMesh.position.set(Math.cos(angle) * radius, 0, Math.sin(angle) * radius);
+                textMesh.lookAt(0, 0, 0);
+
+                scene.add(textMesh);
+
+                return { mesh: textMesh, radius, speed, angle };
+            });
+
+            function animate() {
+                requestAnimationFrame(animate);
+
+                textMeshes.forEach(textMesh => {
+                    textMesh.angle += textMesh.speed;
+                    textMesh.mesh.position.set(
+                        Math.cos(textMesh.angle) * textMesh.radius,
+                        0,
+                        Math.sin(textMesh.angle) * textMesh.radius
+                    );
+                    textMesh.mesh.lookAt(0, 0, 0);
+                });
+
+                particleSystem.rotation.y += 0.001;
+                renderer.render(scene, camera);
+            }
+            animate();
+        });
+
+        camera.position.z = 20;
+
+        window.addEventListener('resize', () => {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            renderer.setSize(width, height);
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();
+        });
+    </script>
+</body>
+
+</html>
+
+
